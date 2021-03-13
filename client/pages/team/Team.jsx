@@ -9,8 +9,11 @@ import { Button, WeeklyPicks } from "../../components";
 import { useIsMountedRef } from "../../hooks";
 import { roundData } from "../../constants";
 
+// TODO create league select
+
 const Team = () => {
   const { currentMode } = useCurrentMode();
+  const [league, setLeague] = useState("");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
@@ -82,6 +85,7 @@ const Team = () => {
       bigBikePicks: cleanseSelectedRiders,
       week: roundData.currentRound,
       totalPoints: 0,
+      league,
     });
 
     axios

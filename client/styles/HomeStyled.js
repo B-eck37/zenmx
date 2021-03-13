@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { MODERN_WHITE } from "./colors";
 
 export default styled.div`
   margin: 0;
@@ -22,6 +23,7 @@ export default styled.div`
     display: flex;
     align-items: center;
     height: 100px;
+    margin-top: 50px;
   }
 
   .animation-container {
@@ -52,6 +54,7 @@ export default styled.div`
   }
 
   .fast-lap {
+    position: relative;
     height: 65px;
     width: 350px;
     max-width: 350px;
@@ -61,15 +64,36 @@ export default styled.div`
     align-items: center;
     justify-content: space-between;
     background-color: ${({ currentMode }) =>
-      currentMode ? "#fff" : "#282828"};
-    color: ${({ currentMode }) => (currentMode ? "#282828" : "#fff")};
+      currentMode ? "#fff" : `${MODERN_WHITE}`};
+    color: #282828;
+    // color: ${({ currentMode }) => (currentMode ? "#282828" : "#fff")};
     border: ${({ currentMode }) => (currentMode ? "#282828" : "aqua")} solid 1px;
+  }
+
+  .placement {
+    position: absolute;
+    font-size: 65px;
+    left: 40%;
+    color: rgba(0, 0, 0, 0.1);
+  }
+
+  .rider-last {
+    display: none;
+  }
+
+  .rider-last,
+  .rider-full {
+    font-weight: bold;
   }
 
   .rider-image {
     background-color: #000;
     height: 100%;
     width: 65px;
+  }
+
+  .mobile-fastest {
+    display: none;
   }
 
   footer {
@@ -176,14 +200,65 @@ export default styled.div`
     height: 1em;
   }
 
+  @media (max-width: 1490px) {
+    .rider-full {
+      display: none;
+    }
+    .rider-last {
+      display: block;
+    }
+
+    .animation-container {
+      min-width: 4000px;
+      > span {
+        width: 460px !important;
+        margin-right: 32px;
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .fast-lap {
+      flex-direction: column;
+      height: 150px;
+      width: 350px !important;
+
+      > section {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .placement {
+      position: static;
+      font-size: 55px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .marquee {
+      display: none;
+    }
+
+    .mobile-fastest {
+      margin-top: 50px;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .fast-lap {
+        max-width: 200px;
+        margin-right: 0;
+      }
+    }
+  }
+
   @media (max-width: 600px) {
     .grid {
       width: 100%;
       flex-direction: column;
-    }
-    .animation-container {
-      width: 2000%;
-      animation: scrollPhone 50s linear infinite;
     }
   }
 

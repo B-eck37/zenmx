@@ -22,11 +22,13 @@ const Home = () => {
   const [fastestLaps, setFastestLaps] = useState([]);
   const { currentMode } = useCurrentMode();
   const { user, isLoading } = useUser();
+  const [userWithPicks, setUserWithPicks] = useState(null);
   const router = useRouter();
   let isMounted = false;
 
   useEffect(() => {
     if (!user && !isLoading) {
+      setUserWithPicks(null);
       router.push("/login");
       return null;
     }
@@ -39,6 +41,8 @@ const Home = () => {
         ])
         .then(
           axios.spread(({ data: userData }, { data }) => {
+            if (userData.success) setUserWithPicks(userData.user);
+            console.log(data);
             setResults(data.raceResults);
             setFastestLaps(data.fastestLaps);
             setTimeout(() => {
@@ -57,7 +61,7 @@ const Home = () => {
   if (loading || isLoading) {
     return <CircularProgress />;
   }
-
+  console.log(user, userWithPicks);
   return (
     <HomeStyled currentMode={currentMode}>
       {fastestLaps && fastestLaps.length > 0 ? (
@@ -67,17 +71,42 @@ const Home = () => {
             {fastestLaps.map(({ rider, lap, bike }, index) => {
               return (
                 <div key={`${rider}-fast-lap`} className={`fast-lap ${index}`}>
-                  <img
-                    src={bikeLogos[bike.toLowerCase()]}
-                    alt=""
-                    className="rider-image"
-                  />
-                  <div>{rider}</div>
+                  <section>
+                    <img
+                      src={bikeLogos[bike.toLowerCase()]}
+                      alt=""
+                      className="rider-image"
+                    />
+                    <span className="placement">{index + 1}</span>
+                  </section>
+                  <div className="rider-full">{rider}</div>
+                  <div className="rider-last">{rider.split(" ")[1]}</div>
                   <div>{lap}</div>
                 </div>
               );
             })}
           </div>
+        </div>
+      ) : null}
+      {fastestLaps && fastestLaps.length > 0 ? (
+        <div className="mobile-fastest">
+          {fastestLaps.slice(0, 3).map(({ rider, lap, bike }, index) => {
+            return (
+              <div key={`${rider}-fast-lap`} className={`fast-lap ${index}`}>
+                <section>
+                  <img
+                    src={bikeLogos[bike.toLowerCase()]}
+                    alt=""
+                    className="rider-image"
+                  />
+                  <span className="placement">{index + 1}</span>
+                </section>
+                <div className="rider-full">{rider}</div>
+                <div className="rider-last">{rider.split(" ")[1]}</div>
+                <div>{lap}</div>
+              </div>
+            );
+          })}
         </div>
       ) : null}
       <main>
